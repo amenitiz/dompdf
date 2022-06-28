@@ -93,9 +93,11 @@ class Page extends AbstractFrameReflower
      */
     function reflow(BlockFrameDecorator $block = null)
     {
+        /** @var AbstractFrameDecorator $frame */
+        $frame = $this->_frame;
+        $child = $frame->get_first_child();
         $fixed_children = [];
         $prev_child = null;
-        $child = $this->_frame->get_first_child();
         $current_page = 0;
 
         while ($child) {
@@ -144,13 +146,13 @@ class Page extends AbstractFrameReflower
             $this->_check_callbacks("begin_page_render", $child);
 
             // Render the page
-            $this->_frame->get_renderer()->render($child);
+            $frame->get_renderer()->render($child);
 
             // Check for end render callback
             $this->_check_callbacks("end_page_render", $child);
 
             if ($next_child) {
-                $this->_frame->next_page();
+                $frame->next_page();
             }
 
             // Wait to dispose of all frames on the previous page
